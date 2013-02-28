@@ -5,7 +5,7 @@ Install Hazel prefPane
 ## Usage
 
 ```puppet
-include yadr
+include hazel
 ```
 
 ## Required Puppet Modules
