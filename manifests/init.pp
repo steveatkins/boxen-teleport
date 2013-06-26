@@ -27,7 +27,8 @@ class teleport {
   exec { 'teleport-install':
     command => "cp -R /${install_dir}/teleport/${$pref_pane_name} ${pref_pane_dir}/",
     creates => "${pref_pane_dir}/${pref_pane_name}",
-  } ->
+    notify => Exec["teleport-cleanup"]
+  } 
 
   exec { 'teleport-cleanup':
     cwd => $install_dir,
