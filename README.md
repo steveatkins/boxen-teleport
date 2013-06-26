@@ -1,17 +1,16 @@
-# Hazel Puppet Module for Boxen
+# Teleport Puppet Module for Boxen
 
-Install Hazel prefPane
+Install Teleport prefPane
 
 ## Usage
 
 ```puppet
-include hazel
+include teleport
 ```
 
 ## Required Puppet Modules
 
 * `boxen`
-* `wget`
 
 ## Development
 

@@ -1,36 +1,37 @@
-# Public: Install Hazel.dmg to /Applications.
+# Public: Install Teleport.zip to /Applications.
 #
 # Examples
 #
-#    include hazel
-class hazel {
-  include wget
-
+#    include teleport
+class teleport {
   $pref_pane_dir = "/Users/${::luser}/Library/PreferencePanes"
-  $pref_pane_name = "Hazel.prefPane"
+  $pref_pane_name = "teleport.prefPane"
   $install_dir = "/tmp"
-  $dmg = "Hazel-3.0.16.dmg"
+  $zip = "teleport.zip"
 
-  exec { 'hazel-download':
+  exec { 'teleport-download':
     cwd => $install_dir,
-    command => "wget https://s3.amazonaws.com/Noodlesoft/${dmg}",
-    creates => "${install_dir}/${dmg}"
+    command => "curl -O http://www.abyssoft.com/software/teleport/downloads/${zip}",
+    creates => "${install_dir}/${zip}",
+    refreshonly => true,
+    subscribe => Exec['teleport-unpack']
   }
 
-  exec { 'hazel-mount':
+  exec { 'teleport-unpack':
     cwd => $install_dir,
-    command => "yes | hdiutil mount Hazel-3.0.16.dmg > /dev/null",
-    require => Exec['hazel-download']
+    command => "unzip ${zip}",
+    refreshonly => true,
+    subscribe => Exec["teleport-install"]
   }
 
-  exec { 'hazel-install':
-    command => "cp -R /Volumes/Hazel/${$pref_pane_name} ${pref_pane_dir}/",
+  exec { 'teleport-install':
+    command => "cp -R /${install_dir}/teleport/${$pref_pane_name} ${pref_pane_dir}/",
     creates => "${pref_pane_dir}/${pref_pane_name}",
-    require => Exec["hazel-mount"],
-  }
+  } ->
 
-  exec { 'hazel-unmount':
-    command => "hdiutil unmount /Volumes/Hazel/"
+  exec { 'teleport-cleanup':
+    cwd => $install_dir,
+    command => "rm ${zip}",
+    refreshonly => true
   }
-  Exec['hazel-install'] -> Exec['hazel-unmount']
 }
