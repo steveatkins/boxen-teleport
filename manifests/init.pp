@@ -9,6 +9,9 @@ class teleport {
   $install_dir = "/tmp"
   $zip = "teleport.zip"
 
+  notify { 'class teleport declared': }
+
+
   exec { 'teleport-download':
     cwd => $install_dir,
     command => "curl -O http://www.abyssoft.com/software/teleport/downloads/${zip}",
