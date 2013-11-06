@@ -13,15 +13,13 @@ class teleport {
     cwd => $install_dir,
     command => "curl -O http://www.abyssoft.com/software/teleport/downloads/${zip}",
     creates => "${install_dir}/${zip}",
-    refreshonly => true,
-    subscribe => Exec['teleport-unpack']
+    refreshonly => true
   }
 
   exec { 'teleport-unpack':
     cwd => $install_dir,
     command => "unzip ${zip}",
     refreshonly => true,
-    subscribe => Exec["teleport-install"],
     require => Exec["teleport-download"]
   }
 
