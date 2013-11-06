@@ -21,13 +21,15 @@ class teleport {
     cwd => $install_dir,
     command => "unzip ${zip}",
     refreshonly => true,
-    subscribe => Exec["teleport-install"]
+    subscribe => Exec["teleport-install"],
+    require => Exec["teleport-download"]
   }
 
   exec { 'teleport-install':
     command => "cp -R /${install_dir}/teleport/${$pref_pane_name} ${pref_pane_dir}/",
     creates => "${pref_pane_dir}/${pref_pane_name}",
-    notify => Exec["teleport-cleanup"]
+    notify => Exec["teleport-cleanup"],
+    require => Exec["teleport-unpack"]
   } 
 
   exec { 'teleport-cleanup':
