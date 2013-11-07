@@ -6,8 +6,10 @@
 class teleport {
   $pref_pane_dir = "/Users/${::luser}/Library/PreferencePanes"
   $pref_pane_name = "teleport.prefPane"
-  $install_dir = "/tmp"
+  $install_dir = $::cachedir
   $zip = "teleport.zip"
+
+  notify { "Installing teleport using ${install_dir}": }
 
   exec { 'teleport-download':
     cwd => $install_dir,
@@ -25,14 +27,13 @@ class teleport {
 ->
 
   exec { 'teleport-install':
-    command => "cp -R /${install_dir}/teleport/${$pref_pane_name} ${pref_pane_dir}/",
+    command => "cp -R ${install_dir}/teleport/${$pref_pane_name} ${pref_pane_dir}/",
     creates => "${pref_pane_dir}/${pref_pane_name}",
     notify => Exec["teleport-cleanup"]
-  } 
+  }
 
   exec { 'teleport-cleanup':
     cwd => $install_dir,
-    command => "rm ${zip}",
-    refreshonly => true
+    command => "rm ${zip}"
   }
 }
