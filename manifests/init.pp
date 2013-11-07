@@ -6,7 +6,7 @@
 class teleport {
   $pref_pane_dir = "/Users/${::luser}/Library/PreferencePanes"
   $pref_pane_name = "teleport.prefPane"
-  $install_dir = $::cachedir
+  $install_dir = $boxen::config::cachedir
   $zip = "teleport.zip"
 
   notify { "Installing teleport using ${install_dir}": }
