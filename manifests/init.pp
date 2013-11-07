@@ -9,7 +9,7 @@ class teleport {
   $install_dir = $boxen::config::cachedir
   $zip = "teleport.zip"
 
-  notify { "Installing teleport using ${install_dir}": }
+  # TODO: only run once
 
   exec { 'teleport-download':
     cwd => $install_dir,
@@ -34,6 +34,14 @@ class teleport {
 
   exec { 'teleport-cleanup':
     cwd => $install_dir,
-    command => "rm -rf teleport"
+    command => "rm -rf teleport __MACOSX",
   }
+
+
+  # TODO: optionally accept teleport
+  # "com.apple.universalaccessAuthWarning" =     {
+  #   "/Users/amiel/Library/PreferencePanes/teleport.prefPane/Contents/Resources/teleportd.app" = 1;
+  #   "/Users/amiel/Library/PreferencePanes/teleport.prefPane/Contents/Resources/teleportd.app/Contents/MacOS/teleportd" = 1;
+  #   "com.abyssoft.teleport" = 1;
+  # };
 }
