@@ -34,6 +34,6 @@ class teleport {
 
   exec { 'teleport-cleanup':
     cwd => $install_dir,
-    command => "rm ${zip}"
+    command => "rm -rf teleport"
   }
 }
