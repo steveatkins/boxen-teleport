@@ -9,28 +9,25 @@ class teleport {
   $install_dir = "/tmp"
   $zip = "teleport.zip"
 
-  notify { 'class teleport declared': }
-
-
   exec { 'teleport-download':
     cwd => $install_dir,
     command => "curl -O http://www.abyssoft.com/software/teleport/downloads/${zip}",
-    creates => "${install_dir}/${zip}",
-    refreshonly => true
+    creates => "${install_dir}/${zip}"
   }
+
+->
 
   exec { 'teleport-unpack':
     cwd => $install_dir,
-    command => "unzip ${zip}",
-    refreshonly => true,
-    require => Exec["teleport-download"]
+    command => "unzip ${zip}"
   }
+
+->
 
   exec { 'teleport-install':
     command => "cp -R /${install_dir}/teleport/${$pref_pane_name} ${pref_pane_dir}/",
     creates => "${pref_pane_dir}/${pref_pane_name}",
-    notify => Exec["teleport-cleanup"],
-    require => Exec["teleport-unpack"]
+    notify => Exec["teleport-cleanup"]
   } 
 
   exec { 'teleport-cleanup':
