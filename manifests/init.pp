@@ -21,7 +21,7 @@ class teleport {
 
   exec { 'teleport-unpack':
     cwd => $install_dir,
-    command => "unzip ${zip}"
+    command => "unzip -o ${zip}"
   }
 
 ->
